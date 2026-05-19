@@ -6,6 +6,14 @@ import os
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class GenerateRequest(BaseModel):
@@ -13,7 +21,11 @@ class GenerateRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"status": "Trendyol AI Backend çalışıyor"}
+    return {"status": "Backend çalışıyor"}
+
+@app.get("/test")
+def test():
+    return {"message": "Test başarılı"}
 
 @app.post("/generate-image")
 def generate_image(data: GenerateRequest):
